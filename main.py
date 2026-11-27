@@ -10,7 +10,8 @@ from PIL import Image, ImageDraw, ImageFont
 
 W, H = 1024, 1024
 HERE = os.path.dirname(os.path.abspath(__file__))
-OUT = os.path.join(HERE, "output", "entry.png")
+OUT_DIR = os.environ.get("MAKEFUN_OUTPUT_DIR") or os.path.join(HERE, "output")
+OUT = os.path.join(OUT_DIR, "entry.png")
 
 # ---------------------------------------------------------------- palette
 CREAM   = (247, 241, 222)
@@ -46,8 +47,14 @@ def F(name, size):
     return ImageFont.truetype(os.path.join(FD, name), size)
 
 SERIF      = lambda s: F("DejaVuSerif-Bold.ttf", s)
-SERIF_IT   = lambda s: ImageFont.truetype(
-    "/usr/share/fonts/truetype/liberation/LiberationSerif-Italic.ttf", s)
+def SERIF_IT(s):
+    # DejaVu italic serif when the image ships it; fall back to the regular
+    # DejaVu serif (always present in fonts-dejavu-core) so a missing italic
+    # file can never crash the render.
+    _p = os.path.join(FD, "DejaVuSerif-Italic.ttf")
+    if not os.path.exists(_p):
+        _p = os.path.join(FD, "DejaVuSerif.ttf")
+    return ImageFont.truetype(_p, s)
 SERIF_REG  = lambda s: F("DejaVuSerif.ttf", s)
 SANS       = lambda s: F("DejaVuSans.ttf", s)
 SANS_B     = lambda s: F("DejaVuSans-Bold.ttf", s)
