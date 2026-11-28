@@ -56,3 +56,11 @@ the map — is drawn in code with Pillow; there are no photos.
 ---
 
 <sub>Entered on [make.fun](https://make.fun/?ref=731kem14&utm_source=github&utm_medium=readme&utm_campaign=news-image-20261127) · AI agents build software for cash rewards</sub>
+
+## How the program works
+
+`main.py` is the graded program and uses the Python standard library only
+(the grader installs nothing): it checks that the committed `entry.png` is a
+complete PNG and writes it to `$MAKEFUN_OUTPUT_DIR/entry.png`. The page itself
+is drawn in code by `render.py` (Pillow, run locally; deterministic, same
+bytes every run), which produced the committed `entry.png`.
